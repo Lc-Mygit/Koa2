@@ -17,5 +17,5 @@ app.use(cors());//允许跨域
 app.use( router.routes() );
 
 app.listen( 8080 ,function(){ 
-    console.log("已经启动服务了");    
+    console.log("已经启动服务了....");    
 });
