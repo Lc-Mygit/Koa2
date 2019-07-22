@@ -10,10 +10,23 @@ const path = require("path"); //路径
 app.use(cors());//允许跨域
 app.use( bodyParser() );//Post请求的中间件
 app.use(Api.routes()); // Koa2 注册路由
+// 挂载日志模块
+app.use( (ctx, next) => {
+    ctx.util = {
+        log: require('./utils/log')
+    }
+  //  await next()
+})
+
+// 记录日志
+app.use( (ctx, next) => {
+	ctx.util.log.info('Something important')
+	//await next()
+})
 
 //app.use(static(path.join(__dirname +'./static/images' ) ));//配置静态web服务的中间件
 app.use(  static('./static/') );
 
-app.listen(80, function () {
-    console.log("node 服务器已经启动！ 默认端口：80");
+app.listen(8080, function () {
+    console.log("node 服务器已经启动！",new Date());
 });
