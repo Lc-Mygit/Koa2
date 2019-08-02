@@ -4,7 +4,7 @@
  */
 const router = require("./api"); //Koa2 路由导入  连同 api文件也一起执行
 const multer = require("koa-multer"); //文件上传的中间件
-require("koa-static");
+
 
 //文件上传配置
 let storage = multer.diskStorage({
