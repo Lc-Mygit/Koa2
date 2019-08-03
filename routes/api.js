@@ -7,12 +7,23 @@ const mysql = require("../Mysql/mysql");
  */
 router.get("/getuser", async (ctx, next) => {
     //数据库查询是异步，要运用 async await 才能取到值
-    let temp = await mysql.query('select * from users',null,function(res,fields){
+    /*let temp = await mysql.query('select * from users',null,function(res,fields){
         console.log("查询的结果是：");
         console.log(res[0].username);
-      
         
-    });
+        
+    });*/   //'insert into users (user_ip,username,nickname,password,email )VALUES(?,?,?,?,?)'
+    mysql.query(
+        "SELECT * FROM users",
+        [],
+        function(res,fields){
+            console.log("查询的结果是：");
+            console.log(res);
+                
+        }
+    )
+
+
     //console.log(temp);
     ctx.response.body = "异步的问题";
 

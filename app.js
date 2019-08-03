@@ -17,6 +17,6 @@ app.use(Api.routes()); // Koa2 注册路由
 //app.use(static(path.join(__dirname +'./static/images' ) ));//配置静态web服务的中间件
 app.use(  static('./static/') );
 
-app.listen(80, function () {
+app.listen(88, function () {
     console.log("node 服务器已经启动！",new Date());
 });
