@@ -10,8 +10,7 @@ router.get("/getuser", async (ctx, next) => {
     /*let temp = await mysql.query('select * from users',null,function(res,fields){
         console.log("查询的结果是：");
         console.log(res[0].username);
-        
-        
+    
     });*/   //'insert into users (user_ip,username,nickname,password,email )VALUES(?,?,?,?,?)'
     mysql.query(
         "SELECT * FROM users",
@@ -22,12 +21,14 @@ router.get("/getuser", async (ctx, next) => {
                 
         }
     )
+    let reslut =  await mysql.query("SELECT * FROM users");
+    reslut    
+    ctx.response.body ={
+        status:true,
+        msg:"成功获取用户的信息",
+        data:reslut
+    };
 
-
-    //console.log(temp);
-    ctx.response.body = "异步的问题";
-
-   
 });
 
 router.get("/Myinfo", async (ctx,next) => {

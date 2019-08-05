@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>登录</title>
+    <link rel="stylesheet" href="./static/css/login.css">
+    <link rel="stylesheet" href="./static/css/mdialog.css">
+</head>
+
+<body>
+    <!--背景 -->
+    <div id="bg">
+
+        <div id="login_wrap">
+            <div id="login">
+                <!-- 登录注册切换动画 -->
+                <div id="status">
+                   登录
+                </div>
+                <span>
+                    <form action="post">
+                        <p class="form"><input type="text" id="user" placeholder="用户名"></p>
+                        <p class="form"><input type="password" id="passwd" placeholder="密码"></p>
+                        <p class="form confirm" style="height: 0px;"><input type="password" id="confirm-passwd"
+                                placeholder="确认密码"></p>
+                        <input type="button" value="登录" class="btn Login" style="margin-right: 20px;">
+                        <input type="button" value="注册" class="btn Signin"  id="btn">
+                    </form>
+                    <a href="#">忘记密码?</a>
+                </span>
+            </div>
+
+
+           
+
+
+            <div id="login_img">
+                <!-- 图片绘制框 -->
+                <span class="circle">
+                    <span></span>
+                    <span></span>
+                </span>
+                <span class="star">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+                <span class="fly_star">
+                    <span></span>
+                    <span></span>
+                </span>
+                <p id="title"><i>C</i><i>L</i><i>O</i><i>U</i><i>D</i></p>
+            </div>
+        </div>
+    </div>
+    <!--背景end -->
+
+</body>
+
+</html>
+<script src="./static/js/jquery-3.4.1.min.js"></script>
+<script src="./static/js/mdialog.js"></script>
+<script src="./static/js/login.js"></script>

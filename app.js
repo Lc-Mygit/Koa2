@@ -12,11 +12,9 @@ app.use( bodyParser() );//Post请求的中间件
 app.use(Api.routes()); // Koa2 注册路由
 
 
+app.use(  static('./www') ); //服务器静态资源
 
-
-//app.use(static(path.join(__dirname +'./static/images' ) ));//配置静态web服务的中间件
-app.use(  static('./static/') );
-
-app.listen(88, function () {
+app.listen(80, function () {
     console.log("node 服务器已经启动！",new Date());
 });
+  
