@@ -10,11 +10,26 @@ const mysql = require("./Mysql/mysql"); //运行mysql
 app.use(cors());//允许跨域
 app.use( bodyParser() );//Post请求的中间件
 app.use(Api.routes()); // Koa2 注册路由
-
-
 app.use(  static('./www') ); //服务器静态资源
 
-app.listen(80, function () {
+const server = require('http').Server(app.callback());
+const io = require('socket.io')(server);
+
+//监听客户端链接,回调函数会传递本次链接的socket
+io.on('connection', socket => {
+    // 监听客户端发送的信息
+    socket.on("sentToServer", message => {
+        // 给客户端返回信息
+        io.emit("sendToClient", {message});
+    });
+    // 监听连接断开事件
+    socket.on("disconnect", () => {
+        console.log("连接已断开...");
+    });
+});
+
+
+
+app.listen(88, function () {
     console.log("node 服务器已经启动！",new Date());
 });
-  
