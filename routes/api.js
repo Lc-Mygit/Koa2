@@ -12,15 +12,7 @@ router.get("/getuser", async (ctx, next) => {
         console.log(res[0].username);
     
     });*/   //'insert into users (user_ip,username,nickname,password,email )VALUES(?,?,?,?,?)'
-    mysql.query(
-        "SELECT * FROM users",
-        [],
-        function(res,fields){
-            console.log("查询的结果是：");
-            console.log(res);
-                
-        }
-    )
+
     let reslut =  await mysql.query("SELECT * FROM users");
     reslut    
     ctx.response.body ={
@@ -31,12 +23,40 @@ router.get("/getuser", async (ctx, next) => {
 
 });
 
-router.get("/Myinfo", async (ctx,next) => {
-    let obj = [ 
-            { name: "李程", addr: "广西横县新福镇冲表村11号", age: 23 }, 
-    ];
-    ctx.response.body = obj;
-});
+/**
+ * 博客登录注册的接口
+ *  register 
+ * 
+ * */
+
+router.post("/user/login" , async(ctx,next )=>{
+    console.log("6666666")
+    console.log( ctx.request.body )
+
+    //查询数据库
+    let reslut =  await mysql.query("SELECT * FROM users");
+
+    if(reslut && reslut.length > 0 ){ 
+        for(let i=0;i<reslut.length;i++){
+            let item =reslut[i];
+            if( item.username === ctx.request.body.username && item.password === ctx.request.body.password ){
+                ctx.response.body ={
+                    status:true,
+                    msg:"成功登录",
+                    data:null
+                };
+            }else{
+                ctx.response.body ={
+                    status:false,
+                    msg:"用户名或密码不正确",
+                    data:null
+                };
+            }
+        }
+    }    
+    
+})
+
 
 
 
