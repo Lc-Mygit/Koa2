@@ -7,6 +7,7 @@ const static = require("koa-static");//让服务器资源可被外部访问。
 const path = require("path"); //路径
 const mysql = require("./Mysql/mysql"); //运行mysql
 
+
 app.use(cors());//允许跨域
 app.use( bodyParser() );//Post请求的中间件
 app.use(Api.routes()); // Koa2 注册路由
@@ -32,4 +33,5 @@ io.on('connection', socket => {
 
 app.listen(88, function () {
     console.log("node 服务器已经启动！",new Date());
+    //supervisor app.js  启动
 });

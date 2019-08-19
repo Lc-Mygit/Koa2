@@ -25,37 +25,50 @@ router.get("/getuser", async (ctx, next) => {
 
 /**
  * 博客登录注册的接口
- *  register 
- * 
+ * @param username 用户名  
+ * @param password 密码
  * */
 
 router.post("/user/login" , async(ctx,next )=>{
-    console.log("6666666")
+    
     console.log( ctx.request.body )
-
     //查询数据库
     let reslut =  await mysql.query("SELECT * FROM users");
-
+    
     if(reslut && reslut.length > 0 ){ 
         for(let i=0;i<reslut.length;i++){
             let item =reslut[i];
-            if( item.username === ctx.request.body.username && item.password === ctx.request.body.password ){
-                ctx.response.body ={
-                    status:true,
-                    msg:"成功登录",
-                    data:null
-                };
+          
+            if( item.username === ctx.request.body.username){
+                console.log( item.username === ctx.request.body.username , "序号"+i )
+                if(item.password === ctx.request.body.password){
+                        ctx.response.body ={
+                            status:true,
+                            msg:"成功登录",
+                            data:null
+                        };
+                }else{
+                    ctx.response.body ={
+                        status:false,
+                        msg:"密码不正确！",
+                        data:null
+                    };
+                }
+                //获取到true  就直接退出循环
+                break; 
             }else{
                 ctx.response.body ={
                     status:false,
-                    msg:"用户名或密码不正确",
+                    msg:"用户名不正确",
                     data:null
                 };
             }
         }
     }    
-    
-})
+});
+
+
+//register
 
 
 
