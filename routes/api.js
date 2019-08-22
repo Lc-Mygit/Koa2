@@ -1,6 +1,12 @@
 const Router = require("koa-router"); //Koa2 路由导入
 const router = new Router(); //实例化路由
 const mysql = require("../Mysql/mysql");
+
+//爬虫的配置
+const superagent = require('superagent')
+//const superagent = require('superagent-charset')(request)
+const cheerio    = require("cheerio");
+
 /**
  * 专门写Api接口
  * 
@@ -71,6 +77,40 @@ router.post("/user/login" , async(ctx,next )=>{
 //register
 
 
+//简单的爬虫demo
+router.get("/getWebSpider", async (ctx, next) => {
+    function GetData(){ 
+        return new Promise( (resolve,reject)=>{
+            let url ="https://news.baidu.com/";
+            superagent.get(url)
+           // .charset('utf-8') //当前页面编码格式
+            .end( (err,res)=>{
+                if(err){
+                    console.log(err);
+                    return
+                }
+                //获取页面文档数据
+                let $ = cheerio.load(res.text);
+                let DataArr = [];
+                $("#pane-news li").each( function(){
+                    DataArr.push({title:$(this).text() })
+                })
+                console.log( DataArr )
+                //$("#pane-news li").text()
+                resolve(DataArr ) //内容页面
+          })
+        }); 
+    }    
+
+    let sndData = await GetData();
+    ctx.response.body =  {
+        status:false,
+        msg:sndData,
+        data:null
+    } 
+   
+
+});
 
 
 //向外暴露Api接口
