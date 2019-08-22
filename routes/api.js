@@ -81,7 +81,7 @@ router.post("/user/login" , async(ctx,next )=>{
 router.get("/getWebSpider", async (ctx, next) => {
     function GetData(){ 
         return new Promise( (resolve,reject)=>{
-            let url ="https://news.baidu.com/";
+            let url ="http://www.28404.com/";
             superagent.get(url)
            // .charset('utf-8') //当前页面编码格式
             .end( (err,res)=>{
@@ -91,22 +91,44 @@ router.get("/getWebSpider", async (ctx, next) => {
                 }
                 //获取页面文档数据
                 let $ = cheerio.load(res.text);
+
+
                 let DataArr = [];
-                $("#pane-news li").each( function(){
-                    DataArr.push({title:$(this).text() })
+                let TypeArr = [];
+              
+                $(".warp-all .thead-02 h2 a").each( function(index,item){
+                    TypeArr.push( $(this).text() )
                 })
-                console.log( DataArr )
+                //洗数据 文章类型
+                TypeArr = TypeArr.map( item=>{
+                    return {
+                        ArticlesType:item,
+                        titleArr:[]
+                      }
+                });
+                TypeArr.forEach( (item,index)=>{
+                  
+                    $(".warp-all .column-mr20-08 .article h3 a").each( function(){
+                        TypeArr[0].titleArr.push($(this).text());
+                     });
+                   
+
+                });
+                
+
+                console.log( TypeArr )
                 //$("#pane-news li").text()
-                resolve(DataArr ) //内容页面
+                resolve(TypeArr) //内容页面
           })
-        }); 
+        });   
     }    
+
 
     let sndData = await GetData();
     ctx.response.body =  {
-        status:false,
-        msg:sndData,
-        data:null
+        status:true,
+        msg:"成功爬取内容",
+        data:sndData
     } 
    
 
