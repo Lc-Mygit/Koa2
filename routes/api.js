@@ -3,114 +3,77 @@ const router = new Router(); //实例化路由
 const mysql = require("../Mysql/mysql");
 
 //爬虫的配置
-const superagent = require('superagent')
+const superagent = require('superagent');
 //const superagent = require('superagent-charset')(request)
 const cheerio    = require("cheerio");
 
 /**
- * 专门写Api接口
+ * 专门写服务器Api接口
  * 
  */
-router.get("/getuser", async (ctx, next) => {
-    //数据库查询是异步，要运用 async await 才能取到值
-    /*let temp = await mysql.query('select * from users',null,function(res,fields){
-        console.log("查询的结果是：");
-        console.log(res[0].username);
-    
-    });*/   //'insert into users (user_ip,username,nickname,password,email )VALUES(?,?,?,?,?)'
-
-    let reslut =  await mysql.query("SELECT * FROM users");
-    reslut    
-    ctx.response.body ={
-        status:true,
-        msg:"成功获取用户的信息",
-        data:reslut
-    };
-
-});
-
-/**
- * 博客登录注册的接口
- * @param username 用户名  
- * @param password 密码
- * */
-
-router.post("/user/login" , async(ctx,next )=>{
-    
-    console.log( ctx.request.body )
-    //查询数据库
-    let reslut =  await mysql.query("SELECT * FROM users");
-    
-    if(reslut && reslut.length > 0 ){ 
-        for(let i=0;i<reslut.length;i++){
-            let item =reslut[i];
-          
-            if( item.username === ctx.request.body.username){
-                console.log( item.username === ctx.request.body.username , "序号"+i )
-                if(item.password === ctx.request.body.password){
-                        ctx.response.body ={
-                            status:true,
-                            msg:"成功登录",
-                            data:null
-                        };
-                }else{
-                    ctx.response.body ={
-                        status:false,
-                        msg:"密码不正确！",
-                        data:null
-                    };
-                }
-                //获取到true  就直接退出循环
-                break; 
-            }else{
-                ctx.response.body ={
-                    status:false,
-                    msg:"用户名不正确",
-                    data:null
-                };
-            }
+router.get("/newslist", async (ctx, next) => {
+    console.log(ctx.query.page)
+    if( ctx.query.page <=5 ){ 
+        ctx.response.body = {
+            total:6,
+            data:[
+                {
+                    id:1,
+                    titie:"东契奇成为史上第二快拿到2000+500+500的球员",
+                    pageview:65489,
+                    tag:"建业美嘉",
+                    imgurl:"https://p3.pstatp.com/list/190x124/pgc-image/Rimtmcj5HC0UCj"
+                },
+                {
+                    id:2,
+                    titie:"44投15中！为什么你就不尝试做些改变？还当自己是老大？太天真了",
+                    pageview:564682,
+                    tag:"建业美嘉",
+                    imgurl:"https://p1.pstatp.com/list/190x124/pgc-image/f913c8cd51d345008d69bd2f676d7242"
+                },
+                {
+                    id:3,
+                    titie:"3连败不可怕，哈登卡佩拉让两大奖项失去悬念，威少居功至伟",
+                    pageview:6548926,
+                    tag:"建业美嘉",
+                    imgurl:null,
+                    choose:"精选"
+                },
+                {
+                    id:4,
+                    titie:"手臂都划伤了！詹姆斯强硬回应得不到哨子，这下萧华又有麻烦了",
+                    pageview:6548926,
+                    tag:"建业美嘉",
+                    imgurl:"https://p1.pstatp.com/list/190x124/pgc-image/dc2fef72a8ca4b70817fe2f1d2731827"
+                },
+                {
+                    id:5,
+                    titie:"三分8中0！利拉德回更衣室路上终于发飙，矛头对准安东尼！",
+                    pageview:6548926,
+                    tag:"建业美嘉",
+                    imgurl:"https://p1.pstatp.com/list/190x124/pgc-image/dc2fef72a8ca4b70817fe2f1d2731827"
+                },
+                {
+                    id:6,
+                    titie:"腾讯程序员裸辞3个月，送外卖谋生：比面子更重要的，是活下去",
+                    pageview:55648,
+                    tag:"建业美嘉",
+                    imgurl:null,
+                    choose:"精选"
+                },
+            ]
+        }    
+    }else{
+        //没有更多...
+        ctx.response.body ={
+            total:0,
+            data:[]
         }
-    }    
-});
 
+    }
 
-//register
+})
 
-
-//简单的爬虫demo
-router.get("/getWebSpider", async (ctx, next) => {
-    function GetData(){ 
-        return new Promise( (resolve,reject)=>{
-            let url ="https://news.baidu.com/";
-            superagent.get(url)
-           // .charset('utf-8') //当前页面编码格式
-            .end( (err,res)=>{
-                if(err){
-                    console.log(err);
-                    return
-                }
-                //获取页面文档数据
-                let $ = cheerio.load(res.text);
-                let DataArr = [];
-                $("#pane-news li").each( function(){
-                    DataArr.push({title:$(this).text() })
-                })
-                console.log( DataArr )
-                //$("#pane-news li").text()
-                resolve(DataArr ) //内容页面
-          })
-        }); 
-    }    
-
-    let sndData = await GetData();
-    ctx.response.body =  {
-        status:false,
-        msg:sndData,
-        data:null
-    } 
-   
-
-});
 
 
 //向外暴露Api接口
